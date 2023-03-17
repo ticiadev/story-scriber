@@ -1,7 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-#button--story-new {
-    margin: 1rem;
-}
