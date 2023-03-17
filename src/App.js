@@ -83,8 +83,9 @@ const Story = () => {
   const showEntries = entries.map(entry => <Entry text={entry.text} key={entries.indexOf(entry)} />)
 
   const addNewEntry = (newEntry) => {
-    setEntries(newEntry)
+    setEntries(entries => [...entries.filter(e => e.text !== "No notes yet..."), newEntry])
   }
+
 
   return (
     <section className="w-10/12 mt-8 flex flex-col justify-start items-center gap-4">
@@ -105,15 +106,12 @@ const Entry = ({text}) => {
 }
 
 const NewEntry = ({addNewEntry}) => {
-  const [data,setData] = useState([])
 
   const handleClick = () => {
     const text = document.querySelector("#entry_input").value.trim()
     if(text) {
-      const nextState = produce(data,draftState => {draftState.push({text})})
       document.querySelector("#entry_input").value = ""
-      setData(nextState)
-      addNewEntry(data)
+      addNewEntry({text})
     }
   }
 
