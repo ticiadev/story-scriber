@@ -47,35 +47,35 @@ const Navbar = () => {
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
         <ul className="menu p-4 w-80 bg-base-300 text-base-content">
           <h1 className="prose md:prose-lg lg:prose-xl">Story App</h1>
-          <Stories />
+          <StoryList />
         </ul>
       </div>
   )
 }
 
-const Stories = () => {
-  const [stories, setStories] = useState([])
-  const storyArr = [{"title":"Story 1"},{"title":"Story 2"}]
-  const showStories = storyArr.map(story => <li key={storyArr.indexOf(story)}><a>{story.title}</a></li>)
+const StoryList = () => {
+  const noStories = [{title: ""}]
+  const [stories, setStories] = useState(noStories)
+  const showStories = stories.map(story => <li key={stories.indexOf(story)}><a>{story.title}</a></li>)
 
   const addNewStory = (newStory) => {
-    setStories(stories => [newStory])
+    setStories(stories => [...stories.filter(e => e.title !== ""),newStory])
   }
 
   return (
     <>
-      <div className="my-1 mx-auto"><NewStory /></div>
+      <div className="my-1 mx-auto"><NewStory addNewStory={addNewStory} /></div>
       <div>{showStories}</div>
     </>
   )
 }
 
-const NewStory = () => {
+const NewStory = ({addNewStory}) => {
   const handleClick = () => {
     const title = document.querySelector("#title_input").value.trim()
     if(title) {
       document.querySelector("#title_input").value = ""
-      // addNewStory({title})
+      addNewStory({title})
     }
   }
 
@@ -87,7 +87,7 @@ const NewStory = () => {
       </div>
       <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content flex justify-between"> 
         <input type="text" placeholder="Type here" className="input input-bordered input-sm w-full max-w-xs" id="title_input" />
-        <button className="btn btn-square btn-sm btn-ghost" aria-label="Add">+</button>
+        <button className="btn btn-square btn-sm btn-ghost" aria-label="Add" onClick={() => handleClick()}>+</button>
       </div>
     </div>
   )
