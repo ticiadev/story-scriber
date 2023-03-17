@@ -56,10 +56,14 @@ const Navbar = () => {
 const StoryList = () => {
   const noStories = [{title: ""}]
   const [stories, setStories] = useState(noStories)
-  const showStories = stories.map(story => <li key={stories.indexOf(story)}><a>{story.title}</a></li>)
+  const showStories = stories.map(story => <li key={stories.indexOf(story)} onClick ={() => showStoryId(stories.indexOf(story))}><a>{story.title}</a></li>)
 
   const addNewStory = (newStory) => {
     setStories(stories => [...stories.filter(e => e.title !== ""),newStory])
+  }
+
+  const showStoryId = (id) => {
+    console.log(id)
   }
 
   return (
