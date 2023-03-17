@@ -63,7 +63,7 @@ const AddNew = ({item}) => {
 const Story = () => {
   return (
     <section className="w-10/12 mt-8 flex flex-col justify-start items-center gap-4">
-      <AddNew item="Entry" />
+      <NewEntry />
       <Entry />
       <Entry />
     </section>
@@ -77,6 +77,25 @@ const Entry = () => {
         <p>If a dog chews shoes whose shoes does he choose?</p>
       </div>
     </div>
+  )
+}
+
+const NewEntry = () => {
+  return (
+    <>
+      <label htmlFor="new-entry" className="btn btn-primary btn-sm">+ New Entry</label>
+
+      <input type="checkbox" id="new-entry" className="modal-toggle" />
+      <div className="modal">
+        <div className="modal-box">
+        <textarea className="textarea textarea-bordered w-full" placeholder="Bio"></textarea>
+          <div className="modal-action">
+            <label htmlFor="new-entry" className="btn btn-primary btn-sm">Save</label>
+            <label htmlFor="new-entry" className="btn btn-sm">x</label>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
