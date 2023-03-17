@@ -21,6 +21,7 @@ const Title = () => {
           </div> 
           <div className="flex-1 px-2 mx-2"><h2 className="prose md:prose-lg lg:prose-xl">Story Title</h2></div>
         </div>
+        <Story />
       </div>
     </>
   )
@@ -46,6 +47,25 @@ const Nav = () => {
 const NewStory = () => {
   return (
     <button className="btn btn-primary btn-sm" id="button--story-new">New Story</button>
+  )
+}
+
+const Story = () => {
+  return (
+    <>
+      <Entry />
+      <Entry />
+    </>
+  )
+}
+
+const Entry = () => {
+  return (
+    <div className="card w-96 bg-primary text-primary-content">
+      <div className="card-body">
+        <p>If a dog chews shoes whose shoes does he choose?</p>
+      </div>
+    </div>
   )
 }
 
