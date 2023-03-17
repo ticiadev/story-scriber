@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import {produce} from 'immer';
 import './App.css';
 
 const App = () => {
@@ -61,26 +63,46 @@ const AddNew = ({item}) => {
 }
 
 const Story = () => {
+  const noEntries = [{text: "No notes yet..."}]
+  const [entries, setEntries] = useState(noEntries)
+  const showEntries = entries.map(entry => <Entry text={entry.text} key={entries.indexOf(entry)} />)
+
+  const addNewEntry = (newEntry) => {
+    setEntries(newEntry)
+  }
+
   return (
     <section className="w-10/12 mt-8 flex flex-col justify-start items-center gap-4">
-      <NewEntry />
-      <Entry />
-      <Entry />
+      <NewEntry addNewEntry={addNewEntry} />
+      {showEntries}
     </section>
   )
 }
 
-const Entry = () => {
+const Entry = ({text}) => {
   return (
     <div className="card lg:card-side bg-primary text-primary-content">
       <div className="card-body">
-        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <p>{text}</p>
       </div>
     </div>
   )
 }
 
-const NewEntry = () => {
+const NewEntry = ({addNewEntry}) => {
+  const [data,setData] = useState([])
+
+  const handleClick = () => {
+    const text = document.querySelector("#entry_input").value.trim()
+    if(text) {
+      const nextState = produce(data,draftState => {draftState.push({text})})
+      document.querySelector("#entry_input").value = ""
+
+      setData(nextState)
+    }
+    addNewEntry(data)
+  }
+
   return (
     <>
       <label htmlFor="new-entry" className="btn btn-primary btn-sm">+ New Entry</label>
@@ -88,9 +110,9 @@ const NewEntry = () => {
       <input type="checkbox" id="new-entry" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-        <textarea className="textarea textarea-bordered w-full" placeholder="Bio"></textarea>
+          <textarea className="textarea textarea-bordered w-full" id="entry_input" placeholder="entry text"></textarea>
           <div className="modal-action">
-            <label htmlFor="new-entry" className="btn btn-primary btn-sm">Save</label>
+            <label htmlFor="new-entry" className="btn btn-primary btn-sm" onClick={() => handleClick()}>Save</label>
             <label htmlFor="new-entry" className="btn btn-sm">x</label>
           </div>
         </div>
