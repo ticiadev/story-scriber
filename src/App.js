@@ -48,11 +48,26 @@ const Navbar = () => {
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
         <ul className="menu p-4 w-80 bg-base-300 text-base-content">
           <h1 className="prose md:prose-lg lg:prose-xl">Story App</h1>
-          <div className="my-1 mx-auto"><AddNew item="Story" /></div>
+          {/* <div className="my-1 mx-auto"><AddNew item="Story" /></div> */}
+          <div className="my-1 mx-auto"><NewStory /></div>
           <li><a>Sidebar Item 1</a></li>
           <li><a>Sidebar Item 2</a></li>
         </ul>
       </div>
+  )
+}
+
+const NewStory = () => {
+  return (
+    <div className="collapse collapse-plus rounded-box py-0">
+      <input type="checkbox" className="peer" /> 
+      <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
+        New Story
+      </div>
+      <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"> 
+        <input type="text" placeholder="Type here" className="input input-bordered input-sm w-full max-w-xs" />
+      </div>
+    </div>
   )
 }
 
