@@ -97,10 +97,9 @@ const NewEntry = ({addNewEntry}) => {
     if(text) {
       const nextState = produce(data,draftState => {draftState.push({text})})
       document.querySelector("#entry_input").value = ""
-
       setData(nextState)
+      addNewEntry(data)
     }
-    addNewEntry(data)
   }
 
   return (
