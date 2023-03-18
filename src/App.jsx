@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import {v4 as uuid} from "uuid";
 
-const App = () => {
-  const [title, setTitle] = useState("")
 
+const App = () => {
   return (
       <div className="drawer drawer-mobile">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" /> 
@@ -29,43 +28,36 @@ const App = () => {
   )
 }
 
-const Title = ({title}) => {
+const Header = () => {
   return (
-    <div className="flex-1 px-2 mx-2"><h2 className="prose md:prose-lg lg:prose-xl">{title}</h2></div>
+    <header className="navbar bg-neutral text-neutral-content">
+      <a className="btn btn-ghost normal-case text-xl">story scriber</a>
+    </header>
   )
 }
 
-const StoryList = ({onTitle}) => {
-  const noStories = [{title: ""}]
-  const [stories, setStories] = useState(noStories)
-  const [activeStory, setActiveStory] = useState(-1)
-  const showStories = stories.map(story => <li key={stories.indexOf(story)} active={stories.indexOf(story) === activeStory} onClick ={() => updateActivestory(stories.indexOf(story))}><a>{story.title}</a></li>)
+const Story = () => {
+  const [entries, setEntries] = useState([])
+  const [inputText, setInputText] = useState("")
 
-  const addNewStory = (newStory) => {
-    setStories(stories => [...stories.filter(e => e.title !== ""),newStory])
+  const textHandler = (e) => {
+    setInputText(e.target.value)
   }
 
-  const updateActivestory = (id) => {
-    console.log(id)
-    setActiveStory(activeStory !== id ? id : -1)
-    onTitle(stories[activeStory].title)
+  const saveHandler = () => {
+    setEntries((prevState) => [
+      ...prevState,
+      {
+        id: uuid(),
+        text: inputText,
+      },
+    ])
+    setInputText("")
   }
 
-  return (
-    <>
-      <div className="my-1 mx-auto"><NewStory addNewStory={addNewStory} /></div>
-      <div>{showStories}</div>
-    </>
-  )
-}
-
-const NewStory = ({addNewStory}) => {
-  const handleClick = () => {
-    const title = document.querySelector("#title_input").value.trim()
-    if(title) {
-      document.querySelector("#title_input").value = ""
-      addNewStory({title})
-    }
+  const deleteEntry = (id) => {
+    const filteredEntries = entries.filter((entry) => entry.id !== id)
+    setEntries(filteredEntries)
   }
 
   return (
@@ -129,7 +121,6 @@ const Entry = ({id, text, deleteEntry}) => {
         </button>
       </div>
       </div>
-    </div>
   )
 }
 
