@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import {v4 as uuid} from "uuid";
 
 const App = () => {
   const [title, setTitle] = useState("")
@@ -81,59 +82,71 @@ const NewStory = ({addNewStory}) => {
   )
 }
 
-const AddNew = ({item}) => {
-  return (
-    <button className="btn btn-primary btn-sm">New {item}</button>
-  )
-}
-
 const Story = () => {
-  const noEntries = [{text: "No notes yet..."}]
-  const [entries, setEntries] = useState(noEntries)
-  const showEntries = entries.map(entry => <Entry text={entry.text} key={entries.indexOf(entry)} />)
+  const [entries, setEntries] = useState([])
+  const [inputText, setInputText] = useState("")
 
-  const addNewEntry = (newEntry) => {
-    setEntries(entries => [...entries.filter(e => e.text !== "No notes yet..."), newEntry])
+  const textHandler = (e) => {
+    setInputText(e.target.value)
   }
 
+  const saveHandler = () => {
+    setEntries((prevState) => [
+      ...prevState,
+      {
+        id: uuid(),
+        text: inputText,
+      },
+    ])
+    setInputText("")
+  }
+
+  const deleteEntry = (id) => {
+    const filteredEntries = entries.filter((entry) => entry.id !== id)
+    setEntries(filteredEntries)
+  }
+
+  const showEntries = entries.map(entry => <Entry text={entry.text} key={entry.id} id={entry.id} deleteEntry={deleteEntry} />)
+
   return (
-    <main className="w-10/12 mt-8 flex flex-col justify-start items-center gap-4">
-      <NewEntry addNewEntry={addNewEntry} />
-      {showEntries}
+    <main className="w-10/12 mt-8 mx-auto">
+      <NewEntry textHandler={textHandler} saveHandler={saveHandler} inputText={inputText} />
+      <section className="flex flex-col gap-y-4">
+        {showEntries}
+      </section>
     </main>
   )
 }
 
-const Entry = ({text}) => {
+const Entry = ({id, text, deleteEntry}) => {
   return (
-    <div className="card lg:card-side bg-primary text-primary-content">
+    <div className="card card-compact lg:card-side bg-primary text-primary-content">
       <div className="card-body">
-        <p>{text}</p>
+        <div>{text}</div>
+        <div className="card-actions justify-end">
+        <button className="btn btn-square btn-xs" onClick={() => deleteEntry(id)} aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
       </div>
     </div>
   )
 }
 
-const NewEntry = ({addNewEntry}) => {
-
-  const handleClick = () => {
-    const text = document.querySelector("#entry_input").value.trim()
-    if(text) {
-      document.querySelector("#entry_input").value = ""
-      addNewEntry({text})
-    }
-  }
+const NewEntry = ({textHandler, saveHandler, inputText}) => {
 
   return (
     <>
-      <label htmlFor="new-entry" className="btn btn-primary btn-sm">+ New Entry</label>
-
+      <div className="my-4 flex justify-center">
+        <label htmlFor="new-entry" className="btn btn-primary btn-sm">+ New Entry</label>
+      </div>
+      
       <input type="checkbox" id="new-entry" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <textarea className="textarea textarea-bordered w-full" id="entry_input" placeholder="entry text"></textarea>
+          <textarea className="textarea textarea-bordered w-full" id="entry_input" placeholder="enter text" value={inputText} onChange={textHandler}></textarea>
           <div className="modal-action">
-            <label htmlFor="new-entry" className="btn btn-primary btn-sm" onClick={() => handleClick()}>Save</label>
+            <label htmlFor="new-entry" className="btn btn-primary btn-sm" onClick={saveHandler}>Save</label>
             <label htmlFor="new-entry" className="btn btn-sm">x</label>
           </div>
         </div>
