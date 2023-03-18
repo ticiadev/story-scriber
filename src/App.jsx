@@ -15,7 +15,7 @@ const App = () => {
           </div> 
           <Title title={title} />
         </header>
-          <Story />
+          {title && <Story />}
         </div>
         <nav className="drawer-side bg-base-300">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
