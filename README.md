@@ -7,7 +7,7 @@ A work in progress React frontend for a full-stack story writing app
 
 ## Demo
 
-![demo image](public\story-scriber.gif)
+![demo image](public/story-scriber.gif)
 
 
 
